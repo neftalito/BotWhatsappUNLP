@@ -162,7 +162,7 @@ client.on("message", async (msg) => {
     console.log(`Ayuda enviada a ${contacto.pushname}( ${contactoNum} )`);
     client.sendMessage(msg.from,`Comandos:
     Los usuarios fueron obtenidos de la plataforma de IDEAS, puede que haya alguno que falte o algún error.
-* "/r (usuario)": Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS),
+* "/r (usuario)": Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali"
 * "/a" o "/añadime": Te añade al grupo de la UNLP.
 * "/ayuda": Ves este mensaje
 
@@ -200,7 +200,7 @@ Para ver tu nombre de usuario:
       );
     }
   }
-  if (contactoNum === "Número admin") { //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario. 
+  if (contactoNum === "5492215585736") { //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario. 
     if (msg.body.toLowerCase() === "/verusuarios") {
       client.sendMessage(
         msg.from,
