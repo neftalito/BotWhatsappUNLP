@@ -10,3 +10,5 @@ Poner el siguiente comando en consola estando en la carpeta del archivo
 ```
 npm "Bot whatsapp.js"
 ```
+
+Obviamente no voy a añadir los archivos con los nombres de usuario.
