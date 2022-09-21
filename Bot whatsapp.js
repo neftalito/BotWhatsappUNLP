@@ -95,7 +95,7 @@ client.on("ready", () => {
 //Luego de iniciar sesión y que el bot esté funcionando, asignamos las variables para poder leer y modificar los usuarios registrados y por registrar.
 var usuariosPorRegistrar = obtenerUsuariosPorRegistrar();
 var usuariosRegistrados = obtenerUsuariosRegistrados();
-console.log("Usuarios registrados: " + JSON.stringify(usuariosRegistrados, null, 2)); //Mostramos los usuarios en pantalla y con JSON.stringify() convertimos el dato en texto, haciéndolo más vistoso al añadir una indentacion de 2 espacios.
+//console.log("Usuarios registrados: " + JSON.stringify(usuariosRegistrados, null, 2)); //Mostramos los usuarios en pantalla y con JSON.stringify() convertimos el dato en texto, haciéndolo más vistoso al añadir una indentacion de 2 espacios.
 
 console.log(" "); //Un espacio para separar en consola los mensajes.
 
@@ -164,7 +164,8 @@ client.on("message", async (msg) => {
     Los usuarios fueron obtenidos de la plataforma de IDEAS, puede que haya alguno que falte o algún error.
 * "/r (usuario)": Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali"
 * "/a" o "/añadime": Te añade al grupo de la UNLP.
-* "/ayuda": Ves este mensaje
+* "/ayuda": Ves este mensaje.
+* "/github": Manda el link del repositorio de GitHub.
 
 Para ver tu nombre de usuario:
 * Hace click en tu nombre dentro de la plataforma de IDEAS. (Esquina superior derecha),
@@ -200,6 +201,9 @@ Para ver tu nombre de usuario:
       );
     }
   }
+  if (msg.body.toLowerCase() == "/github") {
+    msg.reply("https://github.com/neftalito/BotWhatsappUNLP")
+  }
   if (contactoNum === "5492215585736") { //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario. 
     if (msg.body.toLowerCase() === "/verusuarios") {
       client.sendMessage(
@@ -218,7 +222,6 @@ Para ver tu nombre de usuario:
       msg.reply(`${datos[0]} añadido correctamente.`)
     }
   }
-  console.log(" "); //Espacio para separar entre mensajes recibidos.
   
   //Marcar chat como leído.
   await chat.sendSeen();
