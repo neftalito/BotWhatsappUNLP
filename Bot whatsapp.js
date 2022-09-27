@@ -219,12 +219,12 @@ Para ver tu nombre de usuario:
       );
     }
   }
-  if (msg.body.toLowerCase() == "/github") {
+  if (msg.body.toLowerCase() === "/github") {
     msg.reply("https://github.com/neftalito/BotWhatsappUNLP");
   }
 
   //* Grupos
-  if (msg.body.toLowerCase() == "/mostrargrupos") {
+  if (msg.body.toLowerCase() === "/mostrargrupos") {
     console.log(`Enviando grupos a ${contacto.pushname}`);
 
     let grupos = `*Grupo 1:* https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K
@@ -327,7 +327,7 @@ Los links pueden estar caídos.`;
       );
       console.log("Enviando usuarios al administrador.");
     }
-    if (msg.body.toLowerCase() === "/am") {
+    if (msg.body.toLowerCase().startsWith("/am")) {
       let mensaje = msg.body.slice(4).toLowerCase();
       datos = mensaje.split(" ");
       
