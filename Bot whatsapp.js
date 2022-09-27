@@ -319,6 +319,13 @@ Los links pueden estar caídos.`;
 
   //* Administracion
   if (contactoNum === "5492215585736") {
+    if(msg.body.toLowerCase() === "/admin"){
+      msg.reply(`Comandos de administrador:
+* "/verusuarios": Muestra los usuarios registrados
+* "/am (número) (usuario)": Añade manualmente. *El número debe estar en formato "5492215585736"*.
+* "/verificar (usuario)": Verifica si un usuario existe y si está registrado.`
+    )
+    }
     //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario.
     if (msg.body.toLowerCase() === "/verusuarios") {
       client.sendMessage(
@@ -330,12 +337,17 @@ Los links pueden estar caídos.`;
     if (msg.body.toLowerCase().startsWith("/am")) {
       let mensaje = msg.body.slice(4).toLowerCase();
       datos = mensaje.split(" ");
-      
+      if(!datos[0] || !datos[1]){
+        msg.reply("*ERROR*: El número o el usuario no pueden estar vacíos.")
+        return;
+      }
       //Numero y usuario
       usuariosRegistrados[datos[0]] = datos[1];
       guardarUsuariosRegistrados(usuariosRegistrados);
       usuariosRegistrados = obtenerUsuariosRegistrados();
       msg.reply(`${datos[1]} registrado correctamente.`);
+      
+      console.log(`${datos[1]} registrado correctamente con el número ${datos[0]}.`)
     }
     if (msg.body.toLowerCase().startsWith("/verificar")){
       let usuarioAVerificar = msg.body.toLowerCase().split(" ")[1];
