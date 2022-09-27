@@ -126,8 +126,8 @@ client.on("message", async (msg) => {
 
     if (Object.values(usuariosRegistrados).includes(usuario)) {
       //Verificas si el usuario ya está registrado y en ese caso envías un error.
-      client.sendMessage(msg.from, "Usuario ya registrado.");
-      console.log(`Usuario ${usuario} ya registrado.`);
+      client.sendMessage(msg.from, `ERROR: Usuario ${usuario} ya registrado.`);
+      console.error(`Usuario ${usuario} ya registrado.`);
     } else if (Object.keys(usuariosRegistrados).includes(contactoNum)) {
       //Verificas si el número ya tiene un usuario r egistrado y envías un error más el usuario con el que se registró
       client.sendMessage(
@@ -158,7 +158,7 @@ client.on("message", async (msg) => {
         msg.from,
         "*ERROR*: Tu usuario no se ha encontrado ni ha sido registrado previamente. Si consideras que es un error, enviá una captura de la plataforma de IDEAS y esperá la respuesta del administrador."
       ); //En caso de que no se encuentre el usuario ni haya sido registrado. Se muestra un error.
-      console.log(`${usuario} no encontrado.`); //Se avisa en consola de que no se encontró el usuario
+      console.error(`${usuario} no encontrado.`); //Se avisa en consola de que no se encontró el usuario
     }
   }
   //Con el comando /ayuda enviamos el mensaje que diga toda la info del bot
@@ -168,10 +168,10 @@ client.on("message", async (msg) => {
       msg.from,
       `Comandos:
     Los usuarios fueron obtenidos de la plataforma de IDEAS, puede que haya alguno que falte o algún error.
-* "/r (usuario)": Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali"
+* "/r (usuario)": *Se debe mandar por privado*. Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali".
 * "/a" o "/añadime": Te añade al grupo de la UNLP.
-* "/ayuda": Ves este mensaje.
-* "/grupo N": Obtiene el link para unirse al grupo de WhatsApp del grupo N. 
+* "/ayuda": Envía este mensaje.
+* "/grupo _N_": Obtiene el link para unirse al grupo de WhatsApp del grupo N. 
 * "/mostrargrupos": Envía los links de todos los grupos.
 * "/github": Manda el link del repositorio de GitHub.
 
@@ -222,25 +222,8 @@ Para ver tu nombre de usuario:
   if (msg.body.toLowerCase() == "/github") {
     msg.reply("https://github.com/neftalito/BotWhatsappUNLP");
   }
-  if (contactoNum === "5492215585736") {
-    //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario.
-    if (msg.body.toLowerCase() === "/verusuarios") {
-      client.sendMessage(
-        msg.from,
-        JSON.stringify(usuariosRegistrados, null, 2)
-      );
-      console.log("Enviando usuarios al administrador.");
-    }
-    if (msg.body.toLowerCase() === "/rm") {
-      let mensaje = msg.body.slice(4).toLowerCase;
-      datos = mensaje.split(" ");
 
-      usuariosRegistrados[datos[0]] = datos[1];
-      guardarUsuariosRegistrados(usuariosRegistrados);
-      usuariosRegistrados = obtenerUsuariosRegistrados();
-      msg.reply(`${datos[0]} añadido correctamente.`);
-    }
-  }
+  //* Grupos
   if (msg.body.toLowerCase() == "/mostrargrupos") {
     console.log(`Enviando grupos a ${contacto.pushname}`);
 
@@ -331,6 +314,44 @@ Los links pueden estar caídos.`;
       default:
         console.error(`Link del grupo ${numGrupo} no encontrado.`);
         msg.reply(`*ERROR*: Link del grupo ${numGrupo} no encontrado.`);
+    }
+  }
+
+  //* Administracion
+  if (contactoNum === "5492215585736") {
+    //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario.
+    if (msg.body.toLowerCase() === "/verusuarios") {
+      client.sendMessage(
+        msg.from,
+        JSON.stringify(usuariosRegistrados, null, 2)
+      );
+      console.log("Enviando usuarios al administrador.");
+    }
+    if (msg.body.toLowerCase() === "/am") {
+      let mensaje = msg.body.slice(4).toLowerCase();
+      datos = mensaje.split(" ");
+      
+      //Numero y usuario
+      usuariosRegistrados[datos[0]] = datos[1];
+      guardarUsuariosRegistrados(usuariosRegistrados);
+      usuariosRegistrados = obtenerUsuariosRegistrados();
+      msg.reply(`${datos[1]} registrado correctamente.`);
+    }
+    if (msg.body.toLowerCase().startsWith("/verificar")){
+      let usuarioAVerificar = msg.body.toLowerCase().split(" ")[1];
+      if(!usuarioAVerificar){
+        msg.reply("*ERROR*: El usuario no puede estar vacío.")
+        return
+      }
+      if(Object.values(usuariosRegistrados).includes(usuarioAVerificar)){
+        msg.reply(`El usuario ${usuarioAVerificar} está registrado.`)
+      }
+      else if(usuariosPorRegistrar.includes(usuarioAVerificar)){
+        msg.reply(`El usuario ${usuarioAVerificar} no está registrado.`);
+      }
+      else{
+        msg.reply(`El usuario ${usuarioAVerificar} no existe.`)
+      }
     }
   }
 });
