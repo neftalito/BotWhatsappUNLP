@@ -108,7 +108,7 @@ client.on("message", async (msg) => {
   //Para más seguridad, al llegar el comando "/r" en un grupo, enviamos un erro y abortamos con el return.
   if (chat.isGroup && msg.body.toLowerCase().startsWith("/r")) {
     msg.reply(
-      "Por cuestiones de seguridad, para que los demás no vean tu nombre de usuario, sólo se puede registrar tu usuario por privado."
+      "*ERROR*: Por cuestiones de seguridad, para que los demás no vean tu nombre de usuario, sólo se puede registrar tu usuario por privado."
     );
     return;
   }
@@ -117,7 +117,7 @@ client.on("message", async (msg) => {
     let usuario = msg.body.slice(3).toLowerCase(); //Separamos el "/r " del mensaje, así nos quedamos con el nombre de usuario y convertimos todo a minúscula.
     if (usuario.length === 0) {
       //Si llega un comando como "/r", que no tiene ningun nombre de usuario, se envía un error y se aborta con return.
-      client.sendMessage(msg.from, "Error, el usuario no puede estar vacío.");
+      client.sendMessage(msg.from, "*ERROR*: El usuario no puede estar vacío.");
       return;
     }
     console.log(
@@ -132,7 +132,7 @@ client.on("message", async (msg) => {
       //Verificas si el número ya tiene un usuario r egistrado y envías un error más el usuario con el que se registró
       client.sendMessage(
         msg.from,
-        `Su número ya está registrado con el usuario ${usuariosRegistrados[contactoNum]}.`
+        `*ERROR*: Su número ya está registrado con el usuario ${usuariosRegistrados[contactoNum]}.`
       );
     } else if (usuariosPorRegistrar.includes(usuario)) {
       //Si no hay problemas, se guarda el usuario
@@ -156,7 +156,7 @@ client.on("message", async (msg) => {
     } else {
       client.sendMessage(
         msg.from,
-        "Tu usuario no se ha encontrado ni ha sido registrado previamente. Si consideras que es un error, enviá una captura de la plataforma de IDEAS y esperá la respuesta del administrador."
+        "*ERROR*: Tu usuario no se ha encontrado ni ha sido registrado previamente. Si consideras que es un error, enviá una captura de la plataforma de IDEAS y esperá la respuesta del administrador."
       ); //En caso de que no se encuentre el usuario ni haya sido registrado. Se muestra un error.
       console.log(`${usuario} no encontrado.`); //Se avisa en consola de que no se encontró el usuario
     }
@@ -172,6 +172,7 @@ client.on("message", async (msg) => {
 * "/a" o "/añadime": Te añade al grupo de la UNLP.
 * "/ayuda": Ves este mensaje.
 * "/grupo N": Obtiene el link para unirse al grupo de WhatsApp del grupo N. 
+* "/mostrargrupos": Envía los links de todos los grupos.
 * "/github": Manda el link del repositorio de GitHub.
 
 Para ver tu nombre de usuario:
@@ -208,13 +209,13 @@ Para ver tu nombre de usuario:
           );
         } catch (err) {
           //En caso de que haya un error le mandamos al usuario que hubo un error y mostramos en consola qué error fue.
-          msg.reply("Ha habido un error al añadirte al grupo.");
+          msg.reply("*ERROR*: Ha ocurrido un error al añadirte al grupo. Por favor contacta un administrador.");
           console.error(err);
         }
       });
     } else {
       msg.reply(
-        "Su usuario no está registrado o no tiene permitido acceder al grupo." //Si el usuario no está registrado le avisamos.
+        "*ERROR*: Su usuario no está registrado o no tiene permitido acceder al grupo." //Si el usuario no está registrado le avisamos.
       );
     }
   }
@@ -240,67 +241,9 @@ Para ver tu nombre de usuario:
       msg.reply(`${datos[0]} añadido correctamente.`);
     }
   }
-  if (msg.body.toLowerCase().startsWith("/grupo")) {
-    let numGrupo = msg.body.toLowerCase().split(" ")[1]; //Obtenemos el número de grupo.
-    let grupos = {
-      Grupo1: "https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K",
-      Grupo2: "https://chat.whatsapp.com/Gk9ui6VCYj8KqDcJJMoiBS",
-      Grupo3: "https://chat.whatsapp.com/Cvu9M9xuHGMCm93y8aAipZ",
-      Grupo4: "https://chat.whatsapp.com/GmJPJQtWq3j9inbTnuEHjf",
-      Grupo5: "https://chat.whatsapp.com/LYWjMBVgRIuD9sa31asASI",
-      Grupo6: "https://chat.whatsapp.com/K50URcxKr9O0YLqISGlxWV",
-      Grupo7: "https://chat.whatsapp.com/EjfwGliyt9VLtyLLYitDzb",
-      Grupo8: "https://chat.whatsapp.com/Fl2TUBMwSDaHF5QkN7GCMs",
-      Grupo9: "https://chat.whatsapp.com/EMM6Pfx6fbE6EmIdDUZ9EX",
-      Grupo10: "https://chat.whatsapp.com/FptpXdToVteGB0fxnyLlhI",
-      Grupo11: "https://chat.whatsapp.com/BUypVZ575KMLEhrGVnTRfR",
-      Grupo12: "https://chat.whatsapp.com/GqOOCMYmd4VKtcgNtS8yDn",
-    };
-    switch (
-      numGrupo //Usamos un switch para responder con el grupo seleccionado.
-    ) {
-      case 1:
-        msg.reply(`*Grupo1*: ${grupos["Grupo1"]}`);
-        break;
-      case 2:
-        msg.reply(`*Grupo2*: ${grupos["Grupo2"]}`);
-        break;
-      case 3:
-        msg.reply(`*Grupo3*: ${grupos["Grupo3"]}`);
-        break;
-      case 4:
-        msg.reply(`*Grupo4*: ${grupos["Grupo4"]}`);
-        break;
-      case 5:
-        msg.reply(`*Grupo5*: ${grupos["Grupo5"]}`);
-        break;
-      case 6:
-        msg.reply(`*Grupo6*: ${grupos["Grupo6"]}`);
-        break;
-      case 7:
-        msg.reply(`*Grupo7*: ${grupos["Grupo7"]}`);
-        break;
-      case 8:
-        msg.reply(`*Grupo8*: ${grupos["Grupo8"]}`);
-        break;
-      case 9:
-        msg.reply(`*Grupo9*: ${grupos["Grupo9"]}`);
-        break;
-      case 10:
-        msg.reply(`*Grupo10*: ${grupos["Grupo10"]}`);
-        break;
-      case 11:
-        msg.reply(`*Grupo11*: ${grupos["Grupo11"]}`);
-        break;
-      case 12:
-        msg.reply(`*Grupo12*: ${grupos["Grupo12"]}`);
-        break;
-      default:
-        console.error(`Link del grupo ${numGrupo} no encontrado.`);
-        msg.reply(`Error: Link del grupo ${numGrupo} no encontrado.`);
-    }
-  }
-  if (msg.body.toLowerCase == "/grupos") {
+  if (msg.body.toLowerCase() == "/mostrargrupos") {
+    console.log(`Enviando grupos a ${contacto.pushname}`);
+
     let grupos = `*Grupo 1:* https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K
 
 *Grupo 2:* https://chat.whatsapp.com/Gk9ui6VCYj8KqDcJJMoiBS
@@ -328,6 +271,66 @@ Para ver tu nombre de usuario:
 Los links pueden estar caídos.`;
     msg.reply(grupos); //Enviamos todos los grupos
   }
-  //Marcar chat como leído.
-  await chat.sendSeen();
+  if (msg.body.toLowerCase().startsWith("/grupo")) {
+    let numGrupo = parseInt(msg.body.toLowerCase().split(" ")[1]); //Obtenemos el número de grupo.
+    if(isNaN(numGrupo)){
+      msg.reply("*ERROR*: El número del grupo no puede estar vacío.")
+      return
+    }
+    let grupos = {
+      Grupo1: "https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K",
+      Grupo2: "https://chat.whatsapp.com/Gk9ui6VCYj8KqDcJJMoiBS",
+      Grupo3: "https://chat.whatsapp.com/Cvu9M9xuHGMCm93y8aAipZ",
+      Grupo4: "https://chat.whatsapp.com/GmJPJQtWq3j9inbTnuEHjf",
+      Grupo5: "https://chat.whatsapp.com/LYWjMBVgRIuD9sa31asASI",
+      Grupo6: "https://chat.whatsapp.com/K50URcxKr9O0YLqISGlxWV",
+      Grupo7: "https://chat.whatsapp.com/EjfwGliyt9VLtyLLYitDzb",
+      Grupo8: "https://chat.whatsapp.com/Fl2TUBMwSDaHF5QkN7GCMs",
+      Grupo9: "https://chat.whatsapp.com/EMM6Pfx6fbE6EmIdDUZ9EX",
+      Grupo10: "https://chat.whatsapp.com/FptpXdToVteGB0fxnyLlhI",
+      Grupo11: "https://chat.whatsapp.com/BUypVZ575KMLEhrGVnTRfR",
+      Grupo12: "https://chat.whatsapp.com/GqOOCMYmd4VKtcgNtS8yDn",
+    };
+    switch (numGrupo){ //Usamos un switch para responder con el grupo seleccionado.
+      case 1:
+        msg.reply(`*Grupo 1*: ${grupos["Grupo1"]}`);
+        break;
+      case 2:
+        msg.reply(`*Grupo 2*: ${grupos["Grupo2"]}`);
+        break;
+      case 3:
+        msg.reply(`*Grupo 3*: ${grupos["Grupo3"]}`);
+        break;
+      case 4:
+        msg.reply(`*Grupo 4*: ${grupos["Grupo4"]}`);
+        break;
+      case 5:
+        msg.reply(`*Grupo 5*: ${grupos["Grupo5"]}`);
+        break;
+      case 6:
+        msg.reply(`*Grupo 6*: ${grupos["Grupo6"]}`);
+        break;
+      case 7:
+        msg.reply(`*Grupo 7*: ${grupos["Grupo7"]}`);
+        break;
+      case 8:
+        msg.reply(`*Grupo 8*: ${grupos["Grupo8"]}`);
+        break;
+      case 9:
+        msg.reply(`*Grupo 9*: ${grupos["Grupo9"]}`);
+        break;
+      case 10:
+        msg.reply(`*Grupo 10*: ${grupos["Grupo10"]}`);
+        break;
+      case 11:
+        msg.reply(`*Grupo 11*: ${grupos["Grupo11"]}`);
+        break;
+      case 12:
+        msg.reply(`*Grupo 12*: ${grupos["Grupo12"]}`);
+        break;
+      default:
+        console.error(`Link del grupo ${numGrupo} no encontrado.`);
+        msg.reply(`*ERROR*: Link del grupo ${numGrupo} no encontrado.`);
+    }
+  }
 });
