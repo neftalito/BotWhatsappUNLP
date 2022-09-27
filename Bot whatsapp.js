@@ -37,7 +37,7 @@ function obtenerUsuariosPorRegistrar() {
 }
 //* Guardar los usuarios que quedan por registrar en un archivo
 /**
- * @param {*} array : Es el arreglo que va a tener los usuarios por registrar para poder guardarlos (Podría hacerse sin pasar el arreglo como parámetro, pero me pareció más lindo así). 
+ * @param {*} array : Es el arreglo que va a tener los usuarios por registrar para poder guardarlos (Podría hacerse sin pasar el arreglo como parámetro, pero me pareció más lindo así).
  * @returns El error que dé en el caso de que no se haya podido guardar el archivo.
  */
 function guardarUsuariosPorRegistrar(array) {
@@ -115,7 +115,8 @@ client.on("message", async (msg) => {
   //Cuando llegue el comando "/r" por privado va a ejecutar esto
   if (msg.body.toLowerCase().startsWith("/r")) {
     let usuario = msg.body.slice(3).toLowerCase(); //Separamos el "/r " del mensaje, así nos quedamos con el nombre de usuario y convertimos todo a minúscula.
-    if (usuario.length === 0) { //Si llega un comando como "/r", que no tiene ningun nombre de usuario, se envía un error y se aborta con return.
+    if (usuario.length === 0) {
+      //Si llega un comando como "/r", que no tiene ningun nombre de usuario, se envía un error y se aborta con return.
       client.sendMessage(msg.from, "Error, el usuario no puede estar vacío.");
       return;
     }
@@ -123,15 +124,18 @@ client.on("message", async (msg) => {
       `Nombre recibido: ${usuario} de ${contacto.pushname}( ${contactoNum} )` //Mostramos en consola el nombre de usuario recibido, de quién llegó el mensaje y su número.
     );
 
-    if (Object.values(usuariosRegistrados).includes(usuario)) { //Verificas si el usuario ya está registrado y en ese caso envías un error.
+    if (Object.values(usuariosRegistrados).includes(usuario)) {
+      //Verificas si el usuario ya está registrado y en ese caso envías un error.
       client.sendMessage(msg.from, "Usuario ya registrado.");
       console.log(`Usuario ${usuario} ya registrado.`);
-    } else if (Object.keys(usuariosRegistrados).includes(contactoNum)) { //Verificas si el número ya tiene un usuario r egistrado y envías un error más el usuario con el que se registró
+    } else if (Object.keys(usuariosRegistrados).includes(contactoNum)) {
+      //Verificas si el número ya tiene un usuario r egistrado y envías un error más el usuario con el que se registró
       client.sendMessage(
         msg.from,
         `Su número ya está registrado con el usuario ${usuariosRegistrados[contactoNum]}.`
       );
-    } else if (usuariosPorRegistrar.includes(usuario)) { //Si no hay problemas, se guarda el usuario
+    } else if (usuariosPorRegistrar.includes(usuario)) {
+      //Si no hay problemas, se guarda el usuario
       client.sendMessage(msg.from, "Usuario encontrado. Registrando..."); //Mostras en consola que el usuario se encontró en la lista de usuarios por registrar y lo guardas.
 
       usuariosRegistrados[contactoNum] = usuario; //Guardamos el nombre de usuario con el número como la llave y el usuario como valor, ejemplo: "usuariosRegistrados["+5492216796844"] = Neftalí".
@@ -160,37 +164,50 @@ client.on("message", async (msg) => {
   //Con el comando /ayuda enviamos el mensaje que diga toda la info del bot
   if (msg.body.toLowerCase() === "/ayuda") {
     console.log(`Ayuda enviada a ${contacto.pushname}( ${contactoNum} )`);
-    client.sendMessage(msg.from,`Comandos:
+    client.sendMessage(
+      msg.from,
+      `Comandos:
     Los usuarios fueron obtenidos de la plataforma de IDEAS, puede que haya alguno que falte o algún error.
 * "/r (usuario)": Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali"
 * "/a" o "/añadime": Te añade al grupo de la UNLP.
 * "/ayuda": Ves este mensaje.
+* "/grupo N": Obtiene el link para unirse al grupo de WhatsApp del grupo N. 
 * "/github": Manda el link del repositorio de GitHub.
 
 Para ver tu nombre de usuario:
-* Hace click en tu nombre dentro de la plataforma de IDEAS. (Esquina superior derecha),
-* Hace click en "Editar Perfil".
-* Una vez cargue la página vas a poder ver que al principio de todo va a decir "Nombre de usuario" y abajo de eso va a estar tu usuario.`);
+1. Hace click en tu nombre dentro de la plataforma de IDEAS. (Esquina superior derecha).
+2. Hace click en "Editar Perfil".
+3. Una vez cargue la página vas a poder ver que al principio de todo va a decir "Nombre de usuario" y abajo de eso va a estar tu usuario.`
+    );
   }
   //Con el comando "/a" o "/añadime" añadimos al usuario al grupo de la facu
-  if (msg.body.toLowerCase() === "/a" || msg.body.toLowerCase() === "/añadime") {
-    if (Object.keys(usuariosRegistrados).includes(contactoNum)) { //Verificamos que el usuario ya esté registrado para añadirlo.
+  if (
+    msg.body.toLowerCase() === "/a" ||
+    msg.body.toLowerCase() === "/añadime"
+  ) {
+    if (Object.keys(usuariosRegistrados).includes(contactoNum)) {
+      //Verificamos que el usuario ya esté registrado para añadirlo.
       const nombreGrupo = "Curso Ingreso 2023 UNLP"; //Asignamos el nombre del grupo a una variable.
-      
       console.log(`Añadiendo ${contacto.pushname} a ${nombreGrupo}`); //Avisamos en consola que estamos añadiendo a un usuario.
 
-      client.getChats().then((chats) => { //Obtenemos los chats del cliente.
+      client.getChats().then((chats) => {
+        //Obtenemos los chats del cliente.
         const grupo = chats.find(
           (chat) => chat.isGroup && chat.name === nombreGrupo
         ); //Filtramos entre los chats el que sea el grupo y tenga el mismo nombre que el de la variable asignada previamente.
         try {
-          grupo
-            .addParticipants([contacto.id._serialized]) //Añadimos el usuario al grupo.
-            .then(() => {
-              console.log(`${contacto.pushname} añadido correctamente.`);
-              msg.reply("Se te ha añadido al grupo."); //Respondemos al usuario de que se le agregó al grupo.
-            });
-        } catch (err) { //En caso de que haya un error le mandamos al usuario que hubo un error y mostramos en consola qué error fue.
+          console.log(
+            grupo
+              .addParticipants([contacto.id._serialized]) //Añadimos el usuario al grupo.
+              .then(() => {
+                console.log(
+                  `${contacto.pushname} añadido correctamente al grupo ${grupo.name}.`
+                );
+                msg.reply("Se te ha añadido al grupo."); //Respondemos al usuario de que se le agregó al grupo.
+              })
+          );
+        } catch (err) {
+          //En caso de que haya un error le mandamos al usuario que hubo un error y mostramos en consola qué error fue.
           msg.reply("Ha habido un error al añadirte al grupo.");
           console.error(err);
         }
@@ -202,9 +219,10 @@ Para ver tu nombre de usuario:
     }
   }
   if (msg.body.toLowerCase() == "/github") {
-    msg.reply("https://github.com/neftalito/BotWhatsappUNLP")
+    msg.reply("https://github.com/neftalito/BotWhatsappUNLP");
   }
-  if (contactoNum === "5492215585736") { //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario. 
+  if (contactoNum === "5492215585736") {
+    //Esto es para administrar, el comando "/verusuarios" muestra qué usuarios estan registrados y el comando "/rm" añade manualmente a un usuario.
     if (msg.body.toLowerCase() === "/verusuarios") {
       client.sendMessage(
         msg.from,
@@ -212,17 +230,104 @@ Para ver tu nombre de usuario:
       );
       console.log("Enviando usuarios al administrador.");
     }
-    if(msg.body.toLowerCase() === "/rm"){
+    if (msg.body.toLowerCase() === "/rm") {
       let mensaje = msg.body.slice(4).toLowerCase;
-      datos = mensaje.split(" ")
+      datos = mensaje.split(" ");
 
       usuariosRegistrados[datos[0]] = datos[1];
       guardarUsuariosRegistrados(usuariosRegistrados);
       usuariosRegistrados = obtenerUsuariosRegistrados();
-      msg.reply(`${datos[0]} añadido correctamente.`)
+      msg.reply(`${datos[0]} añadido correctamente.`);
     }
   }
-  
+  if (msg.body.toLowerCase().startsWith("/grupo")) {
+    let numGrupo = msg.body.toLowerCase().split(" ")[1]; //Obtenemos el número de grupo.
+    let grupos = {
+      Grupo1: "https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K",
+      Grupo2: "https://chat.whatsapp.com/Gk9ui6VCYj8KqDcJJMoiBS",
+      Grupo3: "https://chat.whatsapp.com/Cvu9M9xuHGMCm93y8aAipZ",
+      Grupo4: "https://chat.whatsapp.com/GmJPJQtWq3j9inbTnuEHjf",
+      Grupo5: "https://chat.whatsapp.com/LYWjMBVgRIuD9sa31asASI",
+      Grupo6: "https://chat.whatsapp.com/K50URcxKr9O0YLqISGlxWV",
+      Grupo7: "https://chat.whatsapp.com/EjfwGliyt9VLtyLLYitDzb",
+      Grupo8: "https://chat.whatsapp.com/Fl2TUBMwSDaHF5QkN7GCMs",
+      Grupo9: "https://chat.whatsapp.com/EMM6Pfx6fbE6EmIdDUZ9EX",
+      Grupo10: "https://chat.whatsapp.com/FptpXdToVteGB0fxnyLlhI",
+      Grupo11: "https://chat.whatsapp.com/BUypVZ575KMLEhrGVnTRfR",
+      Grupo12: "https://chat.whatsapp.com/GqOOCMYmd4VKtcgNtS8yDn",
+    };
+    switch (
+      numGrupo //Usamos un switch para responder con el grupo seleccionado.
+    ) {
+      case 1:
+        msg.reply(`*Grupo1*: ${grupos["Grupo1"]}`);
+        break;
+      case 2:
+        msg.reply(`*Grupo2*: ${grupos["Grupo2"]}`);
+        break;
+      case 3:
+        msg.reply(`*Grupo3*: ${grupos["Grupo3"]}`);
+        break;
+      case 4:
+        msg.reply(`*Grupo4*: ${grupos["Grupo4"]}`);
+        break;
+      case 5:
+        msg.reply(`*Grupo5*: ${grupos["Grupo5"]}`);
+        break;
+      case 6:
+        msg.reply(`*Grupo6*: ${grupos["Grupo6"]}`);
+        break;
+      case 7:
+        msg.reply(`*Grupo7*: ${grupos["Grupo7"]}`);
+        break;
+      case 8:
+        msg.reply(`*Grupo8*: ${grupos["Grupo8"]}`);
+        break;
+      case 9:
+        msg.reply(`*Grupo9*: ${grupos["Grupo9"]}`);
+        break;
+      case 10:
+        msg.reply(`*Grupo10*: ${grupos["Grupo10"]}`);
+        break;
+      case 11:
+        msg.reply(`*Grupo11*: ${grupos["Grupo11"]}`);
+        break;
+      case 12:
+        msg.reply(`*Grupo12*: ${grupos["Grupo12"]}`);
+        break;
+      default:
+        console.error(`Link del grupo ${numGrupo} no encontrado.`);
+        msg.reply(`Error: Link del grupo ${numGrupo} no encontrado.`);
+    }
+  }
+  if (msg.body.toLowerCase == "/grupos") {
+    let grupos = `*Grupo 1:* https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K
+
+*Grupo 2:* https://chat.whatsapp.com/Gk9ui6VCYj8KqDcJJMoiBS
+
+*Grupo 3:* https://chat.whatsapp.com/Cvu9M9xuHGMCm93y8aAipZ
+
+*Grupo 4:* https://chat.whatsapp.com/GmJPJQtWq3j9inbTnuEHjf
+
+*Grupo 5:* https://chat.whatsapp.com/LYWjMBVgRIuD9sa31asASI
+
+*Grupo 6:* https://chat.whatsapp.com/K50URcxKr9O0YLqISGlxWV
+
+*Grupo 7:* https://chat.whatsapp.com/EjfwGliyt9VLtyLLYitDzb
+
+*Grupo 8:* https://chat.whatsapp.com/Fl2TUBMwSDaHF5QkN7GCMs
+
+*Grupo 9:* https://chat.whatsapp.com/EMM6Pfx6fbE6EmIdDUZ9EX
+
+*Grupo 10:* https://chat.whatsapp.com/FptpXdToVteGB0fxnyLlhI
+
+*Grupo 11:* https://chat.whatsapp.com/BUypVZ575KMLEhrGVnTRfR
+
+*Grupo 12:* https://chat.whatsapp.com/GqOOCMYmd4VKtcgNtS8yDn
+
+Los links pueden estar caídos.`;
+    msg.reply(grupos); //Enviamos todos los grupos
+  }
   //Marcar chat como leído.
   await chat.sendSeen();
 });
