@@ -203,7 +203,7 @@ Para ver tu nombre de usuario:
       }
 
       if(nombreGrupo.length === 0){
-        msg.reply("*ERROR*: El argumento de grupo no debe estar vacío.")
+        msg.reply("*ERROR*: El argumento de grupo está vacío o es incorrecto.")
         return;
       }
 
@@ -231,7 +231,7 @@ Para ver tu nombre de usuario:
       });
     } else {
       msg.reply(
-        "*ERROR*: Su usuario no está registrado o no tiene permitido acceder al grupo. (para registrarte envía \"/r (usuario)\" por privado)" //Si el usuario no está registrado le avisamos.
+        "*ERROR*: Su usuario no está registrado o no tiene permitido acceder al grupo. (Para registrarte envía \"/r (usuario de IDEAS)\" por privado)." //Si el usuario no está registrado le avisamos.
       );
     }
   }
