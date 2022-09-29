@@ -188,16 +188,16 @@ Para ver tu nombre de usuario:
       let nombreGrupo = "";
 
       switch (grupoABuscar) {
-        case "UNLP":
+        case "unlp":
           nombreGrupo = "Curso Ingreso 2023 UNLP";
           break;
-        case "COC":
+        case "coc":
           nombreGrupo = "Consultas COC";
           break;
-        case "EPA":
+        case "epa":
           nombreGrupo = "Consultas Epa";
           break;
-        case "MAT":
+        case "mat":
           nombreGrupo = "UNLP 2023 Mat0";
           break;
       }
@@ -215,7 +215,6 @@ Para ver tu nombre de usuario:
           (chat) => chat.isGroup && chat.name === nombreGrupo
         ); //Filtramos entre los chats el que sea el grupo y tenga el mismo nombre que el de la variable asignada previamente.
         try {
-          console.log(
             grupo
               .addParticipants([contacto.id._serialized]) //Añadimos el usuario al grupo.
               .then(() => {
@@ -223,8 +222,7 @@ Para ver tu nombre de usuario:
                   `${contacto.pushname} añadido correctamente al grupo ${grupo.name}.`
                 );
                 msg.reply(`Se te ha añadido al grupo ${grupo.name}.`); //Respondemos al usuario de que se le agregó al grupo.
-              })
-          );
+              });
         } catch (err) {
           //En caso de que haya un error le mandamos al usuario que hubo un error y mostramos en consola qué error fue.
           msg.reply("*ERROR*: Ha ocurrido un error al añadirte al grupo. Por favor contacta un administrador.");
