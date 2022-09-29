@@ -126,8 +126,8 @@ client.on("message", async (msg) => {
 
     if (Object.values(usuariosRegistrados).includes(usuario)) {
       //Verificas si el usuario ya está registrado y en ese caso envías un error.
-      client.sendMessage(msg.from, `ERROR: Usuario ${usuario} ya registrado.`);
       console.error(`Usuario ${usuario} ya registrado.`);
+      client.sendMessage(msg.from, `ERROR: Usuario ${usuario} ya registrado.`);
     } else if (Object.keys(usuariosRegistrados).includes(contactoNum)) {
       //Verificas si el número ya tiene un usuario r egistrado y envías un error más el usuario con el que se registró
       client.sendMessage(
@@ -154,11 +154,11 @@ client.on("message", async (msg) => {
         `Usuario "${usuario}" registrado correctamente.` //Enviamos al usuario que se registró el usuario
       );
     } else {
+      console.error(`${usuario} no encontrado.`); //Se avisa en consola de que no se encontró el usuario
       client.sendMessage(
         msg.from,
         "*ERROR*: Tu usuario no se ha encontrado ni ha sido registrado previamente. Si consideras que es un error, enviá una captura de la plataforma de IDEAS y esperá la respuesta del administrador."
       ); //En caso de que no se encuentre el usuario ni haya sido registrado. Se muestra un error.
-      console.error(`${usuario} no encontrado.`); //Se avisa en consola de que no se encontró el usuario
     }
   }
   //Con el comando /ayuda enviamos el mensaje que diga toda la info del bot
@@ -225,8 +225,9 @@ Para ver tu nombre de usuario:
               });
         } catch (err) {
           //En caso de que haya un error le mandamos al usuario que hubo un error y mostramos en consola qué error fue.
-          msg.reply("*ERROR*: Ha ocurrido un error al añadirte al grupo. Por favor contacta un administrador.");
           console.error(err);
+
+          msg.reply("*ERROR*: Ha ocurrido un error al añadirte al grupo. Por favor contacta un administrador.");
         }
       });
     } else {
@@ -329,6 +330,7 @@ Los links pueden estar caídos.`;
         break;
       default:
         console.error(`Link del grupo ${numGrupo} no encontrado.`);
+
         msg.reply(`*ERROR*: Link del grupo ${numGrupo} no encontrado.`);
     }
   }
@@ -361,9 +363,9 @@ Los links pueden estar caídos.`;
       usuariosRegistrados[datos[0]] = datos[1];
       guardarUsuariosRegistrados(usuariosRegistrados);
       usuariosRegistrados = obtenerUsuariosRegistrados();
-      msg.reply(`${datos[1]} registrado correctamente.`);
-      
       console.log(`${datos[1]} registrado correctamente con el número ${datos[0]}.`)
+
+      msg.reply(`${datos[1]} registrado correctamente.`);
     }
     if (msg.body.toLowerCase().startsWith("/verificar")){
       let usuarioAVerificar = msg.body.toLowerCase().split(" ")[1];
