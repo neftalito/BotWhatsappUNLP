@@ -169,7 +169,7 @@ client.on("message", async (msg) => {
       `Comandos:
     Los usuarios fueron obtenidos de la plataforma de IDEAS, puede que haya alguno que falte o algún error.
 * "/r (usuario)": *Se debe mandar por privado*. Registra tu usuario (el usuario debe ser el que usas en la plataforma de IDEAS). Ejemplo: "/r neftali".
-* "/a" o "/añadime": Te añade al grupo de la UNLP.
+* "/a (UNLP|COC|MAT|EPA)": Te añade al grupo de la UNLP.
 * "/ayuda": Envía este mensaje.
 * "/grupo _N_": Obtiene el link para unirse al grupo de WhatsApp del grupo N. 
 * "/mostrargrupos": Envía los links de todos los grupos.
@@ -181,14 +181,32 @@ Para ver tu nombre de usuario:
 3. Una vez cargue la página vas a poder ver que al principio de todo va a decir "Nombre de usuario" y abajo de eso va a estar tu usuario.`
     );
   }
-  //Con el comando "/a" o "/añadime" añadimos al usuario al grupo de la facu
-  if (
-    msg.body.toLowerCase() === "/a" ||
-    msg.body.toLowerCase() === "/añadime"
-  ) {
-    if (Object.keys(usuariosRegistrados).includes(contactoNum)) {
-      //Verificamos que el usuario ya esté registrado para añadirlo.
-      const nombreGrupo = "Curso Ingreso 2023 UNLP"; //Asignamos el nombre del grupo a una variable.
+  //Con el comando "/a" añadimos al usuario al grupo de la facu
+  if (msg.body.toLowerCase().split(" ")[0] === "/a") {
+    if (Object.keys(usuariosRegistrados).includes(contactoNum)) { //Verificamos que el usuario ya esté registrado para añadirlo.
+      const grupoABuscar = msg.body.toLowerCase().split(" ")[1];
+      let nombreGrupo = "";
+
+      switch (grupoABuscar) {
+        case "UNLP":
+          nombreGrupo = "Curso Ingreso 2023 UNLP";
+          break;
+        case "COC":
+          nombreGrupo = "Consultas COC";
+          break;
+        case "EPA":
+          nombreGrupo = "Consultas Epa";
+          break;
+        case "MAT":
+          nombreGrupo = "UNLP 2023 Mat0";
+          break;
+      }
+
+      if(nombreGrupo.length === 0){
+        msg.reply("*ERROR*: El argumento de grupo no debe estar vacío.")
+        return;
+      }
+
       console.log(`Añadiendo ${contacto.pushname} a ${nombreGrupo}`); //Avisamos en consola que estamos añadiendo a un usuario.
 
       client.getChats().then((chats) => {
@@ -204,7 +222,7 @@ Para ver tu nombre de usuario:
                 console.log(
                   `${contacto.pushname} añadido correctamente al grupo ${grupo.name}.`
                 );
-                msg.reply("Se te ha añadido al grupo."); //Respondemos al usuario de que se le agregó al grupo.
+                msg.reply(`Se te ha añadido al grupo ${grupo.name}.`); //Respondemos al usuario de que se le agregó al grupo.
               })
           );
         } catch (err) {
@@ -215,7 +233,7 @@ Para ver tu nombre de usuario:
       });
     } else {
       msg.reply(
-        "*ERROR*: Su usuario no está registrado o no tiene permitido acceder al grupo." //Si el usuario no está registrado le avisamos.
+        "*ERROR*: Su usuario no está registrado o no tiene permitido acceder al grupo. (para registrarte envía \"/r (usuario)\" por privado)" //Si el usuario no está registrado le avisamos.
       );
     }
   }
@@ -224,8 +242,8 @@ Para ver tu nombre de usuario:
   }
 
   //* Grupos
-  if (msg.body.toLowerCase() === "/mostrargrupos") {
-    console.log(`Enviando grupos a ${contacto.pushname}`);
+  if (msg.body.toLowerCase() === "/mostrargrupos" | msg.body.toLowerCase() === "/grupos") {
+    console.log(`Enviando grupos a ${contacto.pushname}.`);
 
     let grupos = `*Grupo 1:* https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K
 
@@ -254,10 +272,10 @@ Para ver tu nombre de usuario:
 Los links pueden estar caídos.`;
     msg.reply(grupos); //Enviamos todos los grupos
   }
-  if (msg.body.toLowerCase().startsWith("/grupo")) {
+  if (msg.body.toLowerCase().split(" ")[0] === "/grupo") {
     let numGrupo = parseInt(msg.body.toLowerCase().split(" ")[1]); //Obtenemos el número de grupo.
     if(isNaN(numGrupo)){
-      msg.reply("*ERROR*: El número del grupo no puede estar vacío.")
+      msg.reply("*ERROR*: El argumento del número de grupo no puede estar vacío.")
       return
     }
     let grupos = {
