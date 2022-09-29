@@ -162,7 +162,7 @@ client.on("message", async (msg) => {
     }
   }
   //Con el comando /ayuda enviamos el mensaje que diga toda la info del bot
-  if (msg.body.toLowerCase() === "/ayuda") {
+  if (msg.body.toLowerCase() === "/ayuda" || msg.body.toLowerCase() === "/help" || msg.body.toLowerCase() === "/?") {
     console.log(`Ayuda enviada a ${contacto.pushname}( ${contactoNum} )`);
     client.sendMessage(
       msg.from,
@@ -240,7 +240,7 @@ Para ver tu nombre de usuario:
   }
 
   //* Grupos
-  if (msg.body.toLowerCase() === "/mostrargrupos" | msg.body.toLowerCase() === "/grupos") {
+  if (msg.body.toLowerCase() === "/mostrargrupos" || msg.body.toLowerCase() === "/grupos") {
     console.log(`Enviando grupos a ${contacto.pushname}.`);
 
     let grupos = `*Grupo 1:* https://chat.whatsapp.com/LFVGt1YGViM4ZuiB1KpA0K
