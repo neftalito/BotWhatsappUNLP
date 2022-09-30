@@ -1,0 +1,25 @@
+{
+  "name": "botwhatsappunlp",
+  "version": "2.0.0",
+  "description": "Instalar [Node JS](https://nodejs.org/es/). Y luego poner los siguientes comandos en consola.\r ```\r npm i whatsapp-web.js qr-code-terminal\r ```\r ## Correr el código\r Poner el siguiente comando en consola estando en la carpeta del archivo\r ```\r node \"Bot whatsapp.js\"\r ```",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "node src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neftalito/BotWhatsappUNLP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/neftalito/BotWhatsappUNLP/issues"
+  },
+  "homepage": "https://github.com/neftalito/BotWhatsappUNLP#readme",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.17.1"
+  }
+}

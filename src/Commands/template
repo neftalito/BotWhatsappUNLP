@@ -1,0 +1,14 @@
+const { Message } = require("whatsapp-web.js");
+const Bot = require("../structures/Bot");
+module.exports = {
+  name: "",
+  desc: "",
+
+  /**
+   * @param {Message} msg
+   * @param {Bot} client
+   * @param {any[]?} params
+   *
+   * */
+  async execute(client, msg, params) {},
+};
