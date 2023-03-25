@@ -1,10 +1,5 @@
-usuarios
-app.js
-listaUsers.txt
-nombres de usuarios UNLP.json
-prueba.js
-prueba.json
-usuarios.txt
-usuariosFormateados.txt
-Whatsapp Bot.js
+# Carpetas
+node_modules
 .wwebjs_auth
+# Archivos
+package-lock.json
